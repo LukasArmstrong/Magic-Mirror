@@ -1,29 +1,46 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
-		<title>Magic Mirror</title>
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<script>
-		function startTime(){
-			var today = new Date();
-			var h = today.getHours();
-			var m = today.getMinutes();
-			var s = today.getSeconds();
-			m = checkTime(m);
-			s = checkTime(s);
-			document.get ElementById('txt').innerHTML= h+":"+m+":"+s;
-			var t = setTimeout(startTime, 500);
+		function startTime() {
+  		var today = new Date();
+			var mm=today.getMonth();
+			var dd=today.getDate();
+			var yyyy=today.getFullYear();
+  		var h = today.getHours();
+  		var m = today.getMinutes();
+  		var s = today.getSeconds();
+			h = checkTime12(h);
+			m = checkTime60(m);
+  		s = checkTime60(s);
+  		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+			document.getElementById('date').innerHTML = mm + "/" + dd + "/" + yyyy;
+  		var t = setTimeout(startTime, 500);
 		}
-		function checkTime(i){
-			if(i<10){
-				i="0"+i;
-			}
+		function checkTime60(i) {
+  		if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  		return i;
+		}
+		function checkTime12(i){
+			if(i>12){i=i-12};
 			return i;
 		}
 		</script>
 	</head>
 	<body onload="startTime()">
-		<div id="txt"></div>		
+		<div id="date"></div>
+		<div id="skyp"></div>
+		<div id="time"></div>
+		<div id="temp"></div>
+		<script type='text/javascript'>
+			var data = <%-JSON.stringify(data)%>;
+			temp=data[0].current.temperature;
+			console.log(temp);
+			document.getElementById('temp').innerHTML = document.write(temp) + " ";
+			skytext=data[0].current.skytext
+			console.log(skytext);
+			document.getElementById('skyp').innerHTML = document.write(skytext);
+		</script>
 	</body>
 </html>
